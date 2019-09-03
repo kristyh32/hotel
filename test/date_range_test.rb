@@ -23,7 +23,8 @@ describe "DateRange" do
     end
     
     it "will give the length of date range in days as an integer" do
-      
+      expect(@dates.length).must_be_kind_of Integer
+      expect(@dates.length).must_equal 2
     end
     
   end

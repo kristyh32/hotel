@@ -2,7 +2,6 @@ require 'date'
 
 module Hotel
   
-  
   class DateRange
     
     attr_reader :start_date, :end_date
@@ -13,7 +12,7 @@ module Hotel
     end
     
     def length
-      return @end_date - @start_date
+      return (@end_date - @start_date).to_i
     end
     
     def include?(date)
