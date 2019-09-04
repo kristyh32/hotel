@@ -4,20 +4,30 @@ module Hotel
   
   class DateRange
     
-    attr_reader :start_date, :end_date
+    attr_reader :check_in, :check_out
     
-    def initialize(start_date, end_date)
-      @start_date = Date::strptime(start_date, "%m-%d-%Y")
-      @end_date = Date::strptime(end_date, "%m-%d-%Y")
+    def initialize(check_in, check_out)
+      check_in_date = Date::strptime(check_in, "%m-%d-%Y")
+      check_out_date = Date::strptime(check_out, "%m-%d-%Y")
+      
+      if check_in_date > check_out_date
+        raise ArgumentError.new("Please choose a checkout time after #{check_in_date}")
+      elsif check_in_date === check_out_date
+        raise ArgumentError.new("Please enter two seperate dates")
+      else
+        @check_in = check_in_date
+        @check_out = check_out_date
+      end
+      
     end
     
     def length
-      return (@end_date - @start_date).to_i
+      return (@check_out - @check_in).to_i
     end
     
     def include?(date)
       date = Date::strptime(date, "%m-%d-%Y")
-      date.between?(@start_date, @end_date) 
+      date.between?(@check_in, @check_out) 
     end
     
     

@@ -1,7 +1,6 @@
 
 module Hotel
   
-  
   class Room
     
     attr_reader :number
@@ -18,7 +17,6 @@ module Hotel
         rooms << Hotel::Room.new(num)
       end
       return rooms
-      
     end
   end
 end
