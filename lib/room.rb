@@ -11,10 +11,10 @@ module Hotel
       @cost = cost
     end
     
-    def self.load_all
+    def self.load_all(num_of_rooms)
       rooms = []
-      (1..20).each do |num|
-        rooms << Hotel::Room.new(num)
+      num_of_rooms.times do |num|
+        rooms << Hotel::Room.new(num + 1)
       end
       return rooms
     end

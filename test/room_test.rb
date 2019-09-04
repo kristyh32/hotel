@@ -19,7 +19,7 @@ describe "Room" do
   
   describe "self.load all" do
     before do
-      @rooms = Hotel::Room.load_all
+      @rooms = Hotel::Room.load_all(20)
     end
     
     it "will contain instances of Room" do
