@@ -45,4 +45,22 @@ describe "DateRange" do
     end
     
   end
+  
+  describe "include?" do
+    before do
+      @dates = Hotel::DateRange.new("10-22-2019", "10-24-2019")
+    end
+    
+    it "will return true if the date entered is between the two dates" do
+      expect(@dates.include?("10-23-2019")).must_equal true
+    end
+    
+    it "will return false if the date falls on the last day of the reservation" do
+      expect(@dates.include?("10-24-2019")).must_equal false
+    end
+    
+    it "will return true if the date falls on the first day of the reservation" do
+      expect(@dates.include?("10-22-2019")).must_equal true
+    end
+  end
 end

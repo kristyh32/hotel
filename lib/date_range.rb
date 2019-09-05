@@ -27,7 +27,7 @@ module Hotel
     
     def include?(date)
       date = Date::strptime(date, "%m-%d-%Y")
-      date.between?(@check_in, @check_out) 
+      date.between?(@check_in, (@check_out - 1)) 
     end
     
     
