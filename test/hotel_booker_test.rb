@@ -56,6 +56,27 @@ describe "Hotel Booker" do
     
   end
   
+  describe "find by date" do
+    before do
+      
+      @hotel_booker = Hotel::HotelBooker.new(20)
+      @hotel_booker.new_reservation("10-22-2019", "10-24-2019")
+    end
+    
+    it "will return a list of all reservations that include the date passed in" do
+      find = @hotel_booker.find_by_date("10-23-2019")
+      expect(find).must_be_kind_of String
+      expect(find).wont_equal "There are no reservations with that date"
+    end
+    
+    it "will return a message if there are no reservations that match that date" do
+      find = @hotel_booker.find_by_date("10-25-2019")
+      expect(find).must_be_kind_of String
+      expect(find).must_equal "There are no reservations with that date"
+    end
+    
+  end
+  
   
   
   

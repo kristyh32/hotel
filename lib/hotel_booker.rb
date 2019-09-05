@@ -29,6 +29,21 @@ module Hotel
       
     end
     
+    def find_by_date(date)
+      res_by_date = ""
+      @reservations.each do |reservation|
+        if reservation.date_range.include?(date) == true
+          res_by_date += "Reservation ##{reservation.id}, Room #{reservation.room.number}""\n"
+        end
+      end
+      
+      if res_by_date != ""   
+        return res_by_date
+      else
+        return "There are no reservations with that date"
+      end
+    end
+    
     
     
     
