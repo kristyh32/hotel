@@ -30,6 +30,12 @@ module Hotel
       date.between?(@check_in, (@check_out - 1)) 
     end
     
+    def overlap?(check_in, check_out)
+      start = Date::strptime(check_in, "%m-%d-%Y")
+      end_date = Date::strptime(check_out, "%m-%d-%Y")
+      (start..end_date).cover?(@check_in) || (start..end_date).cover?(@check_out - 1)
+    end
+    
     
   end
 end
