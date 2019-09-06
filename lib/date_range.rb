@@ -33,7 +33,13 @@ module Hotel
     def overlap?(check_in, check_out)
       start = Date::strptime(check_in, "%m-%d-%Y")
       end_date = Date::strptime(check_out, "%m-%d-%Y")
-      (start..end_date).cover?(@check_in) || (start..end_date).cover?(@check_out - 1)
+      check_range = (start..end_date)
+      res_range = (@check_in..@check_out)
+      if ((res_range).cover?(check_range.end) == true || (res_range).cover?(check_range.begin) == true) && @check_out != start
+        return true
+      else
+        return false
+      end
     end
     
     

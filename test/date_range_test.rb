@@ -66,20 +66,20 @@ describe "DateRange" do
   
   describe "overlap?" do
     before do
-      @dates = Hotel::DateRange.new("10-22-2019", "10-24-2019")
+      @dates = Hotel::DateRange.new("10-19-2019", "10-30-2019")
     end
     
     it "will return true if one date range overlaps with another" do
       expect(@dates.overlap?("10-21-2019", "10-23-2019")).must_equal true
-      expect(@dates.overlap?("10-21-2019", "10-22-2019")).must_equal true
+      expect(@dates.overlap?("10-21-2019", "10-31-2019")).must_equal true
     end
     
     it "will return false if a date range only overlaps with the end date of another range" do
-      expect(@dates.overlap?("10-24-2019", "10-26-2019")).must_equal false
+      expect(@dates.overlap?("10-30-2019", "11-02-2019")).must_equal false
     end
     
     it "will return true for the same entered dates" do
-      expect(@dates.overlap?("10-22-2019", "10-24-2019")).must_equal true
+      expect(@dates.overlap?("10-19-2019", "10-30-2019")).must_equal true
     end
     
   end

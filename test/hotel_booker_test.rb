@@ -1,4 +1,5 @@
 require_relative 'test_helper'
+require 'pry'
 
 describe "Hotel Booker" do
   describe "HotelBooker instantiation" do
@@ -41,8 +42,8 @@ describe "Hotel Booker" do
     end
     
     it "will create a new instance of reservation" do
-      reserve = @hotel_booker.new_reservation("10-22-2019", "10-23-2019")
-      expect(reserve[0]).must_be_kind_of Hotel::Reservation
+      @hotel_booker.new_reservation("10-22-2019", "10-23-2019")
+      expect(@hotel_booker.reservations[0]).must_be_kind_of Hotel::Reservation
       
     end
     
@@ -52,6 +53,23 @@ describe "Hotel Booker" do
       after = @hotel_booker.reservations.length
       expect(after - before).must_equal 1
       
+    end
+    
+    it "will not select a room that has already been reserved" do
+      @hotel_booker.new_reservation("10-22-2019", "10-23-2019")
+      @hotel_booker.new_reservation("10-22-2019", "10-23-2019")
+      room_1 = @hotel_booker.reservations[0].room
+      room_2 = @hotel_booker.reservations[1].room
+      expect(room_1).wont_equal room_2
+      expect(room_1).must_be_kind_of Hotel::Room
+      expect(room_2).must_be_kind_of Hotel::Room
+    end
+    
+    it "will raise an ArgumentError if there are no avialable rooms" do
+      20.times do
+        @hotel_booker.new_reservation("10-22-2019", "10-23-2019")
+      end
+      expect{ @hotel_booker.new_reservation("10-22-2019", "10-23-2019") }.must_raise ArgumentError
     end
     
   end
@@ -65,14 +83,15 @@ describe "Hotel Booker" do
     
     it "will return a list of all reservations that include the date passed in" do
       find = @hotel_booker.find_by_date("10-23-2019")
-      expect(find).must_be_kind_of String
-      expect(find).wont_equal "There are no reservations with that date"
+      expect(find).must_be_kind_of Array
+      expect(find[0]).must_be_kind_of Hotel::Reservation
+      expect(find.length).must_equal 1
     end
     
-    it "will return a message if there are no reservations that match that date" do
+    it "will return an empty array if there are no reservations that match that date" do
       find = @hotel_booker.find_by_date("10-25-2019")
-      expect(find).must_be_kind_of String
-      expect(find).must_equal "There are no reservations with that date"
+      expect(find).must_be_kind_of Array
+      expect(find.length).must_equal 0
     end
     
   end
