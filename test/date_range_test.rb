@@ -82,5 +82,9 @@ describe "DateRange" do
       expect(@dates.overlap?("10-19-2019", "10-30-2019")).must_equal true
     end
     
+    it "will return false if the dates don't match at all" do
+      expect(@dates.overlap?("4-19-2019", "4-30-2019")).must_equal false
+    end
+    
   end
 end

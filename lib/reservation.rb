@@ -1,24 +1,19 @@
-require_relative 'room'
-require 'securerandom'
-require_relative 'date_range'
-
+require_relative 'reservation_type'
 
 module Hotel
   
-  class Reservation
+  class Reservation < ReservationType
     
-    attr_reader :id, :room, :date_range
+    attr_reader :room
     
     def initialize(room, date_range)
-      @id = SecureRandom.hex(8)
+      super(id, date_range)
       @room = room
-      @date_range = date_range  
     end
     
     
     def cost
-      cost = @room.cost * (@date_range.length)
-      return cost
+      @room.cost * @date_range.length
     end
     
     

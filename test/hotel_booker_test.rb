@@ -97,6 +97,34 @@ describe "Hotel Booker" do
   end
   
   
+  describe "available rooms" do
+    before do
+      
+      @hotel_booker = Hotel::HotelBooker.new(20)
+    end
+    
+    it "will return an array of all avaialble rooms for a given date range" do
+      avail_rooms = @hotel_booker.available_rooms("10-23-2019", "10-25-19")
+      expect(avail_rooms).must_be_kind_of Array
+    end
+    
+    it "will return the correct number of avaialbe rooms for a given date range" do
+      5.times do
+        @hotel_booker.new_reservation("10-22-2019", "10-23-2019")
+      end
+      
+      5.times do
+        @hotel_booker.new_reservation("10-22-2019", "10-24-2019")
+      end
+      
+      avail_rooms = @hotel_booker.available_rooms("10-22-2019", "10-25-19")
+      avail_rooms_2 = @hotel_booker.available_rooms("10-23-2019", "10-25-19")
+      expect(avail_rooms.length).must_equal 10
+      expect(avail_rooms_2.length).must_equal 15
+    end
+  end
+  
+  
   
   
   
