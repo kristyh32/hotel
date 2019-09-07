@@ -122,6 +122,17 @@ describe "Hotel Booker" do
       expect(avail_rooms.length).must_equal 10
       expect(avail_rooms_2.length).must_equal 15
     end
+    
+    it "will consider hotel block rooms taken when finding available rooms" do
+      5.times do
+        @hotel_booker.new_reservation("10-22-2019", "10-23-2019")
+      end
+      
+      @hotel_booker.new_block("10-22-2019", "10-23-2019", 5, 150)
+      avail_rooms = @hotel_booker.available_rooms("10-22-2019", "10-25-19")
+      
+      expect(avail_rooms.length).must_equal 10
+    end
   end
   
   

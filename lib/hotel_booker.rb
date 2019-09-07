@@ -1,3 +1,4 @@
+require 'pry'
 require_relative 'room'
 
 
@@ -49,13 +50,13 @@ module Hotel
         reservation.date_range.overlap?(check_in, check_out) == true
       end
       
-      # same_date_res << @blocks.each do |block|
-      #   block.reservations.select do |reservation|
-      #     reservation.date_range.overlap?(check_in, check_out) == true
-      #   end
-      # end
+      same_date_res << @blocks.map do |block|
+        block.reservations.select do |reservation|
+          reservation.date_range.overlap?(check_in, check_out) == true
+        end
+      end
       
-      taken_rooms = same_date_res.map { |reservation| reservation.room }
+      taken_rooms = same_date_res.flatten.map { |reservation| reservation.room }
       
       avail_rooms = @rooms.select { |room| taken_rooms.include?(room) == false }
       
@@ -78,20 +79,19 @@ module Hotel
       date_range = self.new_date_range(check_in, check_out)
       block_res = []
       num_of_rooms.times do
-        hold = self.new_reservation(check_in, check_out)
+        self.new_reservation(check_in, check_out)
+        hold = @reservations.pop
         hold.room.cost = room_rate
-        block_res << @reservations.delete(hold)
+        block_res << hold
       end
       
       new_block = Hotel::Block.new(date_range, block_res)
       
       @blocks << new_block
       
-      
-      
-      
-      
     end
+    
+    
     
     
     
