@@ -129,10 +129,64 @@ describe "Hotel Booker" do
       end
       
       @hotel_booker.new_block("10-22-2019", "10-23-2019", 5, 150)
-      avail_rooms = @hotel_booker.available_rooms("10-22-2019", "10-25-19")
+      avail_rooms = @hotel_booker.available_rooms("10-22-2019", "10-23-19")
       
       expect(avail_rooms.length).must_equal 10
     end
+    
+    it "will raise an error if not enough rooms are available to make the hotel block" do
+      10.times do
+        @hotel_booker.new_reservation("10-22-2019", "10-23-2019")
+      end
+      2.times do
+        @hotel_booker.new_block("10-22-2019", "10-23-2019", 5, 150)
+      end
+      
+      expect{@hotel_booker.new_block("10-22-2019", "10-23-2019", 5, 150)}.must_raise ArgumentError
+      
+    end
+  end
+  
+  describe "new block" do
+    before do
+      
+      @hotel_booker = Hotel::HotelBooker.new(20)
+      @hotel_booker.new_block("10-22-2019", "10-23-2019", 5, 150)
+    end
+    
+    it "will create a new instance of a hotel block" do
+      expect(@hotel_booker.blocks[0]).must_be_kind_of Hotel::Block
+    end
+    
+    it "the hotel block will contain an instance of date range" do
+      expect(@hotel_booker.blocks[0].date_range).must_be_kind_of Hotel::DateRange
+    end
+    
+    it "will contain instances of reservation stored in an array" do
+      expect(@hotel_booker.blocks[0].reservations).must_be_kind_of Array
+      expect(@hotel_booker.blocks[0].reservations[2]).must_be_kind_of Hotel::Reservation
+    end
+    
+    it "will contain a unique room for each reservation" do
+      reservations = @hotel_booker.blocks[0].reservations
+      
+      expect(reservations[0].room).wont_equal reservations[1].room
+      expect(reservations[0].room).wont_equal reservations[2].room   
+      expect(reservations[0].room).wont_equal reservations[3].room
+      expect(reservations[0].room).wont_equal reservations[4].room
+    end
+    
+    it "will add the new block to the array of blocks" do
+      before = @hotel_booker.blocks.length
+      @hotel_booker.new_block("10-22-2019", "10-25-2019", 5, 150)
+      after = @hotel_booker.blocks.length
+      expect(after - before).must_equal 1
+    end
+  end
+  
+  describe "avail from block" do
+    
+    
   end
   
   

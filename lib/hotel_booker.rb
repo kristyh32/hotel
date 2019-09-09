@@ -24,9 +24,6 @@ module Hotel
       return list
     end
     
-    # def add_reservation(reservation)
-    #   @reservations << reservation
-    # end
     def new_date_range(check_in, check_out)
       date_range = Hotel::DateRange.new(check_in, check_out)
     end
@@ -36,7 +33,7 @@ module Hotel
       date_range = self.new_date_range(check_in, check_out)
       avail_rooms = self.available_rooms(check_in, check_out)
       
-      selected_room = avail_rooms.sample
+      selected_room = avail_rooms[0]
       new_reservation = Hotel::Reservation.new(selected_room, date_range)
       
       @reservations << new_reservation
@@ -50,13 +47,15 @@ module Hotel
         reservation.date_range.overlap?(check_in, check_out) == true
       end
       
-      same_date_res << @blocks.map do |block|
-        block.reservations.select do |reservation|
-          reservation.date_range.overlap?(check_in, check_out) == true
+      @blocks.each do |block|
+        block.reservations.each do |reservation|
+          if reservation.date_range.overlap?(check_in, check_out) == true
+            same_date_res << reservation
+          end
         end
       end
       
-      taken_rooms = same_date_res.flatten.map { |reservation| reservation.room }
+      taken_rooms = same_date_res.map { |reservation| reservation.room }
       
       avail_rooms = @rooms.select { |room| taken_rooms.include?(room) == false }
       
@@ -77,9 +76,13 @@ module Hotel
     
     def new_block(check_in, check_out, num_of_rooms, room_rate)
       date_range = self.new_date_range(check_in, check_out)
-      block_res = []
+      
       num_of_rooms.times do
         self.new_reservation(check_in, check_out)
+      end
+      
+      block_res = []
+      num_of_rooms.times do
         hold = @reservations.pop
         hold.room.cost = room_rate
         block_res << hold

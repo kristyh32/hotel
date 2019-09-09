@@ -8,7 +8,13 @@ module Hotel
     
     def initialize(date_range, reservations = [])
       super(id, date_range)
-      @reservations = reservations
+      
+      if reservations.length > 5
+        raise ArgumentError.new("A block may only have up to 5 rooms")
+      else
+        @reservations = reservations
+      end
+      
     end
     
     def cost
