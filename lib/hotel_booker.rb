@@ -94,13 +94,24 @@ module Hotel
       
     end
     
+    def avail_from_block(block_id)
+      block = @blocks.find {|block| block.id == block_id }
+      rooms = []
+      block.reservations.each do |reservation|
+        rooms << reservation.room
+      end
+      return rooms
+    end
     
-    
-    
-    
+    def res_from_block(room_num)
+      res = 0
+      @blocks.each do |block|
+        res = block.reservations.find { |reservation| reservation.room.number == room_num}
+        block.reservations.delete(res)
+      end
+      
+      @reservations << res
+    end
     
   end
-  
-  
-  
 end

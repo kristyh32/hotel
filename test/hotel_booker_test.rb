@@ -36,8 +36,6 @@ describe "Hotel Booker" do
   
   describe "new reservation" do
     before do
-      # date_range = Hotel::DateRange.new("10-22-2019", "10-24-2019")
-      # @reservation = Hotel::Reservation.new(room, date_range)
       @hotel_booker = Hotel::HotelBooker.new(20)
     end
     
@@ -185,6 +183,55 @@ describe "Hotel Booker" do
   end
   
   describe "avail from block" do
+    before do
+      
+      @hotel_booker = Hotel::HotelBooker.new(20)
+      @hotel_booker.new_block("10-22-2019", "10-23-2019", 5, 150)
+    end
+    
+    it "will return an array of all of the rooms from a block" do
+      block_id = @hotel_booker.blocks[0].id
+      expect(@hotel_booker.avail_from_block(block_id)).must_be_kind_of Array
+      expect(@hotel_booker.avail_from_block(block_id)[2]).must_be_kind_of Hotel::Room
+      expect(@hotel_booker.avail_from_block(block_id).length).must_equal 5
+    end
+    
+  end
+  
+  describe "res from block" do
+    before do
+      room_1 = Hotel::Room.new(4)
+      room_2 = Hotel::Room.new(5)
+      room_3 = Hotel::Room.new(6)
+      date_range = Hotel::DateRange.new("10-22-2019", "10-24-2019")
+      res_1 = Hotel::Reservation.new(room_1, date_range)
+      res_2 = Hotel::Reservation.new(room_2, date_range)
+      res_3 = Hotel::Reservation.new(room_3, date_range)
+      reservations = [res_1, res_2, res_3]
+      block = Hotel::Block.new(date_range, reservations)
+      @hotel_booker = Hotel::HotelBooker.new(20)
+      @hotel_booker.blocks << block
+      
+    end
+    
+    it "will select the correct reservation based on room number from the block" do
+      @hotel_booker.res_from_block(5)
+      
+      expect(@hotel_booker.reservations[-1].room.number).must_equal 5
+    end
+    
+    it "will add that reservation to the list of hotel reservations" do
+      before = @hotel_booker.reservations.length
+      @hotel_booker.res_from_block(5)
+      after = @hotel_booker.reservations.length
+      expect(after - before).must_equal 1
+    end
+    
+    it "will remove that reservation from the hotel block" do
+      @hotel_booker.res_from_block(5)
+      block = @hotel_booker.blocks[0]
+      expect(@hotel_booker.avail_from_block(block.id).length).must_equal 2
+    end
     
     
   end
