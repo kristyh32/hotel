@@ -22,6 +22,13 @@ module Hotel
       cost = res.room.cost * date_range.length
     end
     
+    def avail_rooms
+      rooms = []
+      @reservations.each do |reservation|
+        rooms << reservation.room
+      end
+      return rooms
+    end
+    
   end
-  
 end

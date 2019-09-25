@@ -96,11 +96,7 @@ module Hotel
     
     def avail_from_block(block_id)
       block = @blocks.find {|block| block.id == block_id }
-      rooms = []
-      block.reservations.each do |reservation|
-        rooms << reservation.room
-      end
-      return rooms
+      rooms = block.avail_rooms
     end
     
     def res_from_block(room_num)
