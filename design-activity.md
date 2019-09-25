@@ -24,4 +24,10 @@ In B, the logic would only have to be handled in CartEntry and it could update b
 
 8) B definitely adhered to the single responsibility principle better. 
 
-9)B is definitely more loosely coupled as well since it eliminated Order knowing so much about its neighbors. 
+9)B is definitely more loosely coupled as well since it eliminated Order knowing so much about its neighbors.
+
+
+Hotel:
+
+One of the places where a class takes on too much is Hotel Booker showing rooms that are available in a block. 
+It would be better handled in block rather than having booker go through and figure it out based on the specific block selected. It would allow for two smaller methods rather than a large one and avoid booker knowing too much about block. 
